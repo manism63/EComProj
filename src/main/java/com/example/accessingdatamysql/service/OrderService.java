@@ -45,9 +45,8 @@ public class OrderService {
     }
 
     public OrderResponse createOrder(OrderCreateRequest orderCreateRequest) {
-        EOrders eOrders = orderCreateRequest.getEOrder();
-         List<EOrderDetails> eOrderDetailsList = orderCreateRequest.getEOrderDetailsList();
-//        List<EOrderDetails> eOrderDetailsList = eOrders.orderDetails;
+        EOrders eOrders = orderCreateRequest.getEOrders();
+        List<EOrderDetails> eOrderDetailsList = eOrders.orderDetails;
         Integer orderId = eOrders.getId();
         OrderResponse orderResponse = new OrderResponse();
         Map<String, String> errorDesc = new HashMap<>();
@@ -62,7 +61,6 @@ public class OrderService {
 
         Double totalAmount = 0.0;
         Double shippingTotal = 0.0;
-        System.out.println("Came here 2");
         for(EOrderDetails e: eOrderDetailsList) {
             System.out.println("Item subtotal:" + e.getItemSubTotal());
             System.out.println("Item Shipping total:" + e.getItemSubTotal());
@@ -70,26 +68,27 @@ public class OrderService {
             shippingTotal += e.getShippingCharge();
             e.setOrderId(orderId);
         }
-        System.out.println("Came here 3");
-        // adding tax
 
         totalAmount = (totalAmount + shippingTotal) * 1.1;
 
         eOrders.setTotal(totalAmount);
         eOrders.setShippingTotal(shippingTotal);
 
+        EOrders newOrder = new EOrders();
+        newOrder.setOrderDate(eOrders.getOrderDate());
+        newOrder.setTotal(eOrders.getTotal());
+        newOrder.setShippingTotal(eOrders.getShippingTotal());
+        newOrder.setCustomerId(eOrders.getCustomerId());
+        newOrder.setId(eOrders.getId());
+        newOrder.setStatus(eOrders.getStatus());
+        newOrder.setPaymentDetails(eOrders.getPaymentDetails());
 
-//        System.out.println("Saving Order Details");
-//        orderResponse.setEOrderDetailsList(eOrderDetailsList);
-//        eOrderDetailsRepository.saveAll(eOrderDetailsList);
-
-        System.out.println("Saving EOrders");
+        // Saving Orders
         orderResponse.setEOrders(eOrders);
-        EOrders order = eOrdersRepository.save(eOrders);
+        EOrders order = eOrdersRepository.save(newOrder);
 
-
-
-        System.out.println("Came here 5");
+        // Saving Order Details
+        eOrderDetailsRepository.saveAll(eOrderDetailsList);
 
         return orderResponse;
     }

@@ -5,6 +5,8 @@ import com.example.accessingdatamysql.model.EOrders;
 import com.example.accessingdatamysql.model.OrderCreateRequest;
 import com.example.accessingdatamysql.model.OrderResponse;
 import com.example.accessingdatamysql.service.OrderService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,11 +33,11 @@ public class OrderControllers {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @PostMapping("/createEOrder")
-    @PostMapping(
-            value = "/createEOrder",
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) {
+    @PostMapping("/createEOrder")
+//    @PostMapping(
+//            value = "/createEOrder",
+//            consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) throws JsonProcessingException {
         System.out.println("Came here");
         OrderResponse orderResponse = orderService.createOrder(orderCreateRequest);
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);

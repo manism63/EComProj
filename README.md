@@ -23,56 +23,53 @@ Application Design
  - GetOrder service: `localhost:8080/v1/getEOrder/1`
 ##### Response Type
  ```
- {
-     "billingAddress": {
-         "addressId": 1,
-         "addressType": "Home",
-         "city": "Seattle",
-         "line1": "1212",
-         "line2": "12321",
-         "state": "WA",
-         "zip": "98104"
-     },
-     "shippingAddress": {
-         "addressId": 1,
-         "addressType": "Home",
-         "city": "Seattle",
-         "line1": "1212",
-         "line2": "12321",
-         "state": "WA",
-         "zip": "98104"
-     },
-     "paymentOrderDetails": {
-         "paymentId": 1212,
-         "customerId": "1",
-         "methodType": "CARD",
-         "date": "2020-01-01",
-         "confirmationNumber": "C_01",
-         "billAddressId": 1
-     },
-     "eorders": {
-         "id": 1,
-         "customerId": "1",
-         "status": "Ordered",
-         "paymentId": 1212,
-         "orderDate": "2021-03-20T08:07:54.748+00:00",
-         "shippingAddressId": 1,
-         "total": null,
-         "shippingTotal": null
-     },
-     "eorderDetailsList": [
-         {
-             "orderId": 1,
-             "subOrderId": 1,
-             "orderStatus": "Pending",
-             "itemId": "it_00",
-             "itemQuantity": 1,
-             "itemSubTotal": 15,
-             "orderDate": "2020-01-01",
-             "shippingCharge": 1
-         }
-     ]
- }
+{
+    "eorders": {
+        "id": 1,
+        "customerId": "100",
+        "status": "Pending",
+        "paymentDetails": {
+            "paymentId": 1,
+            "customerId": "100",
+            "methodType": "CARD",
+            "date": "2020-05-01T20:32:10Z",
+            "confirmationNumber": "CONF_01",
+            "billingAddressDetails": {
+                "addressId": 1,
+                "addressType": "HOME",
+                "city": "SEATTLE",
+                "line1": "1314 Spring Street",
+                "line2": "Apt 203",
+                "state": "WA",
+                "zip": "98104"
+            }
+        },
+        "orderDate": "2020-05-01T20:32:10.000+00:00",
+        "shippingAddressDetails": {
+            "addressId": 1,
+            "addressType": "HOME",
+            "city": "SEATTLE",
+            "line1": "1314 Spring Street",
+            "line2": "Apt 203",
+            "state": "WA",
+            "zip": "98104"
+        },
+        "total": 110,
+        "shippingTotal": 10,
+        "orderDetails": [
+            {
+                "orderId": 1,
+                "subOrderId": 1,
+                "orderStatus": "Pending",
+                "itemId": "item_1",
+                "itemQuantity": 1,
+                "itemSubTotal": 50,
+                "orderDate": "2020-05-01T20:32:10Z",
+                "shippingCharge": 5
+            }
+        ]
+    }
+}
 ```
 - Create Order Endpoint: `localhost:8080/v1/createEOrder`
 ##### Request Type:

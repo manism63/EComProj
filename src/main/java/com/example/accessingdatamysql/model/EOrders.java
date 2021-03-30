@@ -41,7 +41,6 @@ public class EOrders {
     private Double shippingTotal;
 
     @OneToMany(fetch = FetchType.EAGER)
-    //    @Fetch(FetchMode.SUBSELECT)
     @JoinColumn(name = "orderId", referencedColumnName = "id")
     public List<EOrderDetails> orderDetails;
 
@@ -111,4 +110,12 @@ public class EOrders {
 //    public void setShippingAddressId(Integer shippingAddressId) {
 //        this.shippingAddressId = shippingAddressId;
 //    }
+
+    public PaymentOrderDetails getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(PaymentOrderDetails paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
 }
