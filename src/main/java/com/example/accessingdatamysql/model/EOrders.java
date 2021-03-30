@@ -3,9 +3,12 @@ package com.example.accessingdatamysql.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 //@Getter
 //@Setter
@@ -22,11 +25,25 @@ public class EOrders {
     )
     private String customerId;
     private String status;
-    private Integer paymentId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "paymentId")
+    public PaymentOrderDetails paymentDetails;
+
     private Date orderDate;
-    private Integer shippingAddressId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "addressId")
+//    public AddressDetails shippingAddressId;
+    public AddressDetails shippingAddressDetails;
+
     private Double total;
     private Double shippingTotal;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    //    @Fetch(FetchMode.SUBSELECT)
+    @JoinColumn(name = "orderId", referencedColumnName = "id")
+    public List<EOrderDetails> orderDetails;
 
     public Double getShippingTotal() {
         return shippingTotal;
@@ -71,13 +88,13 @@ public class EOrders {
         this.status = status;
     }
 
-    public Integer getPaymentId() {
-        return paymentId;
-    }
-
-    public void setPaymentId(Integer paymentId) {
-        this.paymentId = paymentId;
-    }
+//    public Integer getPaymentId() {
+//        return paymentId;
+//    }
+//
+//    public void setPaymentId(Integer paymentId) {
+//        this.paymentId = paymentId;
+//    }
 
     public Date getOrderDate() {
         return orderDate;
@@ -87,11 +104,11 @@ public class EOrders {
         this.orderDate = orderDate;
     }
 
-    public Integer getShippingAddressId() {
-        return shippingAddressId;
-    }
-
-    public void setShippingAddressId(Integer shippingAddressId) {
-        this.shippingAddressId = shippingAddressId;
-    }
+//    public Integer getShippingAddressId() {
+//        return shippingAddressId;
+//    }
+//
+//    public void setShippingAddressId(Integer shippingAddressId) {
+//        this.shippingAddressId = shippingAddressId;
+//    }
 }

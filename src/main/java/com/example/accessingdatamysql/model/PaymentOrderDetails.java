@@ -4,8 +4,8 @@ package com.example.accessingdatamysql.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 //@Getter
 //@Setter
@@ -17,7 +17,14 @@ public class PaymentOrderDetails {
     private String methodType;
     private String date;
     private String confirmationNumber;
-    private Integer billAddressId;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "addressId")
+    public AddressDetails billingAddressDetails;
+//
+//    @OneToOne(fetch = FetchType.EAGER)
+//    @JoinColumn(name = "addressId", referencedColumnName = "billAddressId")
+//    public AddressDetails billingAddressDetail;
 
     public Integer getPaymentId() {
         return paymentId;
@@ -59,11 +66,11 @@ public class PaymentOrderDetails {
         this.confirmationNumber = confirmationNumber;
     }
 
-    public Integer getBillAddressId() {
-        return billAddressId;
-    }
-
-    public void setBillAddressId(Integer billAddressId) {
-        this.billAddressId = billAddressId;
-    }
+//    public Integer getBillAddressId() {
+//        return billAddressId;
+//    }
+//
+//    public void setBillAddressId(Integer billAddressId) {
+//        this.billAddressId = billAddressId;
+//    }
 }

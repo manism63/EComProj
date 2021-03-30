@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.model.OrderResponse;
 import com.example.accessingdatamysql.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,10 +31,21 @@ public class OrderControllers {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/createEOrder")
+//    @PostMapping("/createEOrder")
+    @PostMapping(
+            value = "/createEOrder",
+            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) {
         System.out.println("Came here");
         OrderResponse orderResponse = orderService.createOrder(orderCreateRequest);
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
+
+    @PostMapping("/updateEOrder")
+    public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderCreateRequest orderCreateRequest) {
+        System.out.println("Came here");
+        OrderResponse orderResponse = orderService.createOrder(orderCreateRequest);
+        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+    }
+
 }

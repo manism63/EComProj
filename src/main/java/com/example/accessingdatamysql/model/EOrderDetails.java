@@ -1,15 +1,15 @@
 package com.example.accessingdatamysql.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity(name = "EOrderDetails")
-@IdClass(SubOrderId.class)
-@Data
+// @IdClass(SubOrderId.class)
 public class EOrderDetails {
-    @Id
     private Integer orderId;
     @Id
     private Integer subOrderId;
@@ -84,9 +84,10 @@ public class EOrderDetails {
         this.orderDate = orderDate;
     }
 }
+//
+//@Data
+//class SubOrderId implements Serializable {
+//    private Integer orderId;
+//    private Integer subOrderId;
+//}
 
-@Data
-class SubOrderId implements Serializable {
-    private Integer orderId;
-    private Integer subOrderId;
-}
