@@ -21,6 +21,7 @@ public class PaymentOrderDetails {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addressId")
     public AddressDetails billingAddressDetails;
+
 //
 //    @OneToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "addressId", referencedColumnName = "billAddressId")

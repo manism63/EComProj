@@ -12,6 +12,15 @@ import java.io.Serializable;
 public class EOrderDetails {
     private Integer orderId;
     @Id
+    @SequenceGenerator(
+            name="suborder_id",
+            sequenceName = "suborder_id",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "suborder_id"
+    )
     private Integer subOrderId;
     private String orderStatus;
     private String itemId;
