@@ -13,14 +13,25 @@ import java.util.List;
 //@Getter
 //@Setter
 @Entity(name = "EOrders")
+@Table(name = "eorders")
 public class EOrders {
 
     @Id
+    @SequenceGenerator(
+            name="eorder_seq",
+            sequenceName = "eorder_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "eorder_seq"
+    )
     private Integer id;
     @Column(
             name = "customer_id",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "TEXT",
+            updatable = false
 
     )
     private String customerId;
@@ -34,14 +45,13 @@ public class EOrders {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "addressId")
-//    public AddressDetails shippingAddressId;
     public AddressDetails shippingAddressDetails;
 
     private Double total;
     private Double shippingTotal;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "orderId", referencedColumnName = "id")
+    @JoinColumn(name = "orderId")
     public List<EOrderDetails> orderDetails;
 
     public Double getShippingTotal() {
@@ -103,14 +113,6 @@ public class EOrders {
         this.orderDate = orderDate;
     }
 
-//    public Integer getShippingAddressId() {
-//        return shippingAddressId;
-//    }
-//
-//    public void setShippingAddressId(Integer shippingAddressId) {
-//        this.shippingAddressId = shippingAddressId;
-//    }
-
     public PaymentOrderDetails getPaymentDetails() {
         return paymentDetails;
     }
@@ -118,4 +120,23 @@ public class EOrders {
     public void setPaymentDetails(PaymentOrderDetails paymentDetails) {
         this.paymentDetails = paymentDetails;
     }
+
+    public AddressDetails getShippingAddressDetails() {
+        return shippingAddressDetails;
+    }
+
+    public void setShippingAddressDetails(AddressDetails shippingAddressDetails) {
+        this.shippingAddressDetails = shippingAddressDetails;
+    }
+
+    public List<EOrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<EOrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+
+
 }

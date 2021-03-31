@@ -34,20 +34,18 @@ public class OrderControllers {
     }
 
     @PostMapping("/createEOrder")
-//    @PostMapping(
-//            value = "/createEOrder",
-//            consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderCreateRequest orderCreateRequest) throws JsonProcessingException {
         System.out.println("Came here");
         OrderResponse orderResponse = orderService.createOrder(orderCreateRequest);
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
-    @PostMapping("/updateEOrder")
-    public ResponseEntity<OrderResponse> updateOrder(@RequestBody OrderCreateRequest orderCreateRequest) {
-        System.out.println("Came here");
-        OrderResponse orderResponse = orderService.createOrder(orderCreateRequest);
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+    @PutMapping("/updateEOrder/{id}")
+    public ResponseEntity<OrderResponse> updateOrder(
+            @PathVariable Integer id,
+            @RequestBody OrderCreateRequest orderCreateRequest) {
+        boolean status = orderService.updateOrder(id, orderCreateRequest);
+        return new ResponseEntity<>(status ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
 }

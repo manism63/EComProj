@@ -7,6 +7,7 @@ import com.example.accessingdatamysql.service.validation.EOrderDetailsValidation
 import com.example.accessingdatamysql.service.validation.EOrderValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,9 +65,8 @@ public class OrderService {
         for(EOrderDetails e: eOrderDetailsList) {
             System.out.println("Item subtotal:" + e.getItemSubTotal());
             System.out.println("Item Shipping total:" + e.getItemSubTotal());
-            totalAmount += e.getItemSubTotal();
-            shippingTotal += e.getShippingCharge();
-            e.setOrderId(orderId);
+            totalAmount += (e.getItemSubTotal() == null ? 0 : e.getItemSubTotal());
+            shippingTotal += (e.getShippingCharge() == null ? 0 : e.getShippingCharge());
         }
 
         totalAmount = (totalAmount + shippingTotal) * 1.1;
@@ -82,14 +82,34 @@ public class OrderService {
         newOrder.setId(eOrders.getId());
         newOrder.setStatus(eOrders.getStatus());
         newOrder.setPaymentDetails(eOrders.getPaymentDetails());
+        newOrder.setShippingAddressDetails(eOrders.getShippingAddressDetails());
 
         // Saving Orders
-        orderResponse.setEOrders(eOrders);
         EOrders order = eOrdersRepository.save(newOrder);
+        orderResponse.setEOrders(order);
+        for(EOrderDetails e: eOrderDetailsList) {
+            e.setOrderId(order.getId());
+        }
 
         // Saving Order Details
-        eOrderDetailsRepository.saveAll(eOrderDetailsList);
+        List<EOrderDetails> details = eOrderDetailsRepository.saveAll(eOrderDetailsList);
+        order.setOrderDetails(details);
 
         return orderResponse;
+    }
+
+    @Transactional
+    public boolean updateOrder(Integer orderId, OrderCreateRequest orderCreateRequest) {
+        if(orderId != orderCreateRequest.getEOrders().getId()) {
+            return false;
+        }
+        Optional<EOrders> order = eOrdersRepository.findById(orderId);
+        if(order.isPresent()) {
+            EOrders o = order.get();
+            EOrders updateOrder = orderCreateRequest.getEOrders();
+            o.setStatus(updateOrder.getStatus());
+            return true;
+        }
+        return false;
     }
 }

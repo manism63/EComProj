@@ -14,6 +14,7 @@ public class EOrderValidation {
     public static boolean eOrderValidation(EOrdersRepository eOrdersRepository,
                                            EOrders eOrder,
                                            Map<String, String> errorDesc)  {
+        if(eOrder.getId() == null) return true;
         Optional<EOrders> optionalEOrders = eOrdersRepository.findById(eOrder.getId());
         if(optionalEOrders.isPresent()) {
             errorDesc.put("Error", String.format("Order already present %s", eOrder.getId()));
